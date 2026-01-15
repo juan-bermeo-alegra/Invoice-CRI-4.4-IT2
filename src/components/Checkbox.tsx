@@ -3,7 +3,6 @@ interface CheckboxProps {
   onChange?: (checked: boolean) => void;
   label?: string;
   disabled?: boolean;
-  id?: string;
 }
 
 function Checkbox({
@@ -11,7 +10,6 @@ function Checkbox({
   onChange,
   label,
   disabled = false,
-  id,
 }: CheckboxProps) {
   const handleChange = () => {
     if (!disabled && onChange) {

@@ -5,7 +5,6 @@ import ContactItem from './Contact-item';
 import ThirdPartySelector from './ThirdPartySelector';
 import ProductItem from './Product-item';
 import ItemsBottomSheet from './ItemsBottomSheet';
-import MoreChargesItem from './More-charges-item';
 
 interface Contact {
   name: string;
@@ -51,7 +50,7 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
   const [activeTab, setActiveTab] = useState<'amount' | 'percentage'>('amount');
 
   // Amount Tab
-  const [amountCharges, setAmountCharges] = useState<Charge[]>(existingCharges.filter(c => c.amount !== undefined) || []);
+  const amountCharges = existingCharges.filter(c => c.amount !== undefined) || [];
   const [amountChargeType, setAmountChargeType] = useState<string>('');
   const [amountValue, setAmountValue] = useState('');
   const [isAmountThirdPartySelected, setIsAmountThirdPartySelected] = useState(false);
@@ -59,7 +58,7 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
   const [isAmountChargeNameOpen, setIsAmountChargeNameOpen] = useState(false);
 
   // Percentage Tab
-  const [percentageCharges, setPercentageCharges] = useState<Charge[]>(existingCharges.filter(c => c.percentage !== undefined) || []);
+  const percentageCharges = existingCharges.filter(c => c.percentage !== undefined) || [];
   const [percentageChargeType, setPercentageChargeType] = useState<string>('');
   const [percentageValue, setPercentageValue] = useState('');
   const [isPercentageThirdPartySelected, setIsPercentageThirdPartySelected] = useState(false);
@@ -127,7 +126,6 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
     }
   };
 
-  const currentCharges = activeTab === 'amount' ? amountCharges : percentageCharges;
   const currentChargeType = activeTab === 'amount' ? amountChargeType : percentageChargeType;
   const currentValue = activeTab === 'amount' ? amountValue : percentageValue;
   const isCurrentThirdPartySelected = activeTab === 'amount' ? isAmountThirdPartySelected : isPercentageThirdPartySelected;
