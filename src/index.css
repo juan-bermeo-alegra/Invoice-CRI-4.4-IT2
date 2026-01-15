@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Colors - Text & Icons */
+    --color-text-primary: #0F172A;
+    --color-text-secondary: #334155;
+    --color-text-tertiary: #64748B;
+
+    /* Colors - Background */
+    --color-bg-container: #ffffff;
+
+    /* Colors - Border */
+    --color-border-regular: rgba(148, 163, 184, 0.4);
+    --color-border-active: #30aba9;
+  }
+
+  body {
+    @apply min-w-[320px] min-h-screen bg-white text-slate-900;
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --color-primary-600: #30aba9;
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutToLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideDownFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpToTop {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.animate-toast-v1-enter {
+  animation: slideInFromRight 0.5s ease-out forwards;
+}
+
+.animate-toast-v1-exit {
+  animation: slideOutToLeft 0.5s ease-in forwards;
+}
+
+.animate-toast-v2-enter {
+  animation: slideDownFromTop 0.5s ease-out forwards;
+}
+
+.animate-toast-v2-exit {
+  animation: slideUpToTop 0.5s ease-in forwards;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUpBottomSheet {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-overlay-in {
+  animation: fadeInOverlay 0.15s ease-out forwards;
+}
+
+.animate-bottomsheet-in {
+  animation: slideUpBottomSheet 0.2s ease-out forwards;
+}
+
+@keyframes fadeOutOverlay {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideDownBottomSheet {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.animate-overlay-out {
+  animation: fadeOutOverlay 0.15s ease-in forwards;
+}
+
+.animate-bottomsheet-out {
+  animation: slideDownBottomSheet 0.2s ease-in forwards;
+}

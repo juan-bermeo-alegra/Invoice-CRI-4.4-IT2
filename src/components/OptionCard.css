@@ -1,0 +1,50 @@
+.option-card {
+  background-color: var(--color-bg-container);
+  border: 1px solid var(--color-border-regular);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.option-card__header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.option-card__title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--color-text-primary);
+  flex-grow: 1;
+}
+
+.option-card__description {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-text-secondary);
+  width: 100%;
+}
+
+.option-card__link {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-border-active);
+  width: 100%;
+  cursor: pointer;
+}
+
+.option-card__link:hover {
+  text-decoration: underline;
+}

@@ -1,0 +1,14 @@
+.prototype-type {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.prototype-type__label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-text-tertiary);
+  white-space: nowrap;
+}
