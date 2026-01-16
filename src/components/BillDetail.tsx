@@ -19,7 +19,7 @@ function BillDetail() {
   return (
     <div className="min-h-screen bg-slate-100 w-full flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shrink-0">
+      <div className="sticky top-0 z-10 bg-white border-b border-slate-200 shrink-0">
         <div className="flex items-center justify-between px-4 h-[60px]">
           <button onClick={() => navigate(-1)} className="w-6 h-6">
             <img src="/images/arrow-left.svg" alt="" className="w-full h-full" />

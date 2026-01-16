@@ -163,7 +163,7 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
   return (
     <div className="min-h-screen bg-slate-100 w-full flex flex-col">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 shrink-0">
+      <div className="sticky top-0 z-10 bg-white border-b border-slate-200 shrink-0">
         <div className="flex items-center justify-center px-4 h-[60px] relative">
           <button
             onClick={() => navigate(-1)}

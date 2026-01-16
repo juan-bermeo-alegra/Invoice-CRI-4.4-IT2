@@ -102,7 +102,7 @@ export default function Invoice() {
     <div className="min-h-screen bg-white w-full flex flex-col">
 
       {/* Header */}
-      <div className="bg-white shrink-0">
+      <div className="sticky top-0 z-10 bg-white shrink-0">
         <div className="flex items-center justify-between px-4 h-[60px]">
           <button onClick={() => navigate('/')} className="w-6 h-6">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
