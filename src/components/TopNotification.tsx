@@ -15,7 +15,7 @@ export default function TopNotification() {
                 </svg>
             </div>
             <div className="flex-1 text-sm text-[#334155] leading-5">
-                <span>Los campos Bodega, Moneda y otros están en </span>
+                <span>Los campos Bodega, Moneda, Retención y otros están en </span>
                 <span className="font-bold">Más ajustes (⋮)</span>.
             </div>
             <button

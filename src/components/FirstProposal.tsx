@@ -62,6 +62,7 @@ interface Charge {
   amount?: string;
   percentage?: string;
   selectedContact?: { id: string; name: string } | null;
+  percentageProducts?: Array<{ id: number; name: string; quantity: number; price: number; discount: number }>;
 }
 
 function FirstProposal() {
@@ -689,9 +690,17 @@ function FirstProposal() {
             {otherCharges.length > 0 && (
               <div className="flex flex-col gap-0">
                 {otherCharges.map((charge, index) => {
-                  const displayAmount = charge.amount
-                    ? `₡${parseInt(charge.amount).toLocaleString('es-CR')}`
-                    : `${charge.percentage}%`;
+                  let displayAmount: string;
+
+                  if (charge.amount) {
+                    displayAmount = `₡${parseInt(charge.amount).toLocaleString('es-CR')}`;
+                  } else if (charge.percentage && charge.percentageProducts) {
+                    const subtotal = charge.percentageProducts.reduce((s, p) => s + (p.price * p.quantity - p.discount), 0);
+                    const percentageAmount = Math.round(subtotal * (parseInt(charge.percentage) / 100));
+                    displayAmount = `₡${percentageAmount.toLocaleString('es-CR')}`;
+                  } else {
+                    displayAmount = `${charge.percentage}%`;
+                  }
 
                   return (
                     <div key={charge.id}>
@@ -811,6 +820,21 @@ function FirstProposal() {
             </button>
             {isMoreOptionsOpen && (
               <div className="px-4 pt-2 flex flex-col gap-2">
+                {/* Guardar como un borrador */}
+                <div className="mb-4 pt-3 flex items-center justify-between">
+                  <label className="text-sm font-medium text-slate-700">Guardar como un borrador</label>
+                  <button
+                    onClick={() => setSaveAsDraft(!saveAsDraft)}
+                    className={`relative inline-flex h-8 w-13 items-center rounded-full transition-colors ${saveAsDraft ? 'bg-[#30aba9]' : 'bg-slate-300'
+                      }`}
+                  >
+                    <span
+                      className={`inline-block h-7 w-7 transform rounded-full bg-white transition-transform ${saveAsDraft ? 'translate-x-5' : 'translate-x-0.5'
+                        }`}
+                    />
+                  </button>
+                </div>
+
                 {/* Notas */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-slate-700 mb-2">Notas</label>
@@ -836,21 +860,6 @@ function FirstProposal() {
                     className="w-full h-[152px] px-3.5 py-3 border border-slate-300/40 rounded-xl text-base text-slate-900 placeholder:text-slate-400 outline-none focus:border-[#30aba9] resize-none"
                     placeholder="Términos y condiciones"
                   />
-                </div>
-
-                {/* Guardar como un borrador */}
-                <div className="pb-4 flex items-center justify-between">
-                  <label className="text-base font-medium text-slate-700">Guardar como un borrador</label>
-                  <button
-                    onClick={() => setSaveAsDraft(!saveAsDraft)}
-                    className={`relative inline-flex h-8 w-13 items-center rounded-full transition-colors ${saveAsDraft ? 'bg-[#30aba9]' : 'bg-slate-300'
-                      }`}
-                  >
-                    <span
-                      className={`inline-block h-7 w-7 transform rounded-full bg-white transition-transform ${saveAsDraft ? 'translate-x-5' : 'translate-x-0.5'
-                        }`}
-                    />
-                  </button>
                 </div>
               </div>
             )}
@@ -885,6 +894,23 @@ function FirstProposal() {
                 <span className="text-sm font-normal text-slate-500">-{formatCurrency(totals.retention || 0)}</span>
               </div>
             )}
+            {otherCharges.length > 0 && (
+              <div className="flex justify-between items-center">
+                <span className="text-sm font-normal text-slate-500">Otros cargos</span>
+                <span className="text-sm font-normal text-slate-500">{formatCurrency(
+                  otherCharges.reduce((sum, charge) => {
+                    if (charge.amount) {
+                      return sum + parseInt(charge.amount);
+                    } else if (charge.percentage && charge.percentageProducts) {
+                      const subtotal = charge.percentageProducts.reduce((s, p) => s + (p.price * p.quantity - p.discount), 0);
+                      const percentageAmount = Math.round(subtotal * (parseInt(charge.percentage) / 100));
+                      return sum + percentageAmount;
+                    }
+                    return sum;
+                  }, 0)
+                )}</span>
+              </div>
+            )}
             <div className="h-px bg-slate-200"></div>
             <div className="flex justify-between items-center">
               <span className="text-lg font-bold text-slate-900">Total</span>
@@ -900,7 +926,7 @@ function FirstProposal() {
       </div>
 
       {/* Save Button */}
-      <div className="px-4 py-4 shrink-0 flex flex-col gap-3">
+      <div className="px-4 py-4 shrink-0">
         <button
           onClick={() => navigate('/invoice', { state: { from: 'first-proposal' } })}
           disabled={!isFormValid}
@@ -910,12 +936,6 @@ function FirstProposal() {
             }`}
         >
           {numeration === 'De venta' ? 'Guardar' : 'Emitir'}
-        </button>
-        <button
-          onClick={() => navigate('/invoice')}
-          className="w-full h-12 flex items-center justify-center text-[#30aba9] font-semibold text-base rounded-xl hover:bg-slate-50 transition-colors"
-        >
-          Guardar como borrador
         </button>
       </div>
 

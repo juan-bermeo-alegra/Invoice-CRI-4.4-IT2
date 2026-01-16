@@ -24,25 +24,27 @@ function BillDetail() {
       <div className="flex-1 overflow-y-auto">
         <div className="px-4 pt-4 pb-8 flex flex-col">
           {/* Total Amount Card */}
-          <div className="bg-white rounded-t-xl px-4 py-8 flex items-center justify-center">
-            <p className="text-[40px] font-semibold text-slate-900 leading-[48px]">₡18.000</p>
-          </div>
+          <div className="bg-white rounded-t-xl">
+            <div className="px-4 py-8 flex items-center justify-center">
+              <p className="text-[40px] font-semibold text-slate-900 leading-[48px]">₡18.000</p>
+            </div>
 
-          {/* Divider line */}
-          <div className="bg-white flex items-center justify-center px-0 py-1">
-            <div className="h-px bg-slate-400 w-full"></div>
-          </div>
+            {/* Divider line */}
+            <div className="flex items-center justify-center px-0 py-1">
+              <div className="h-px bg-[rgba(148,163,184,0.2)] w-full"></div>
+            </div>
 
-          {/* No. and Branch */}
-          <div className="bg-white px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1">
-                <p className="text-lg font-semibold text-slate-900 leading-[30px]">No.</p>
-                <p className="text-sm font-normal text-slate-700 leading-5">0060000101207</p>
-              </div>
-              <div className="flex flex-col items-end text-xs font-normal text-slate-500 leading-4">
-                <p>Sucursal: 006</p>
-                <p>Punto de venta: 00001</p>
+            {/* No. and Branch */}
+            <div className="px-4 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1">
+                  <p className="text-lg font-semibold text-slate-900 leading-[30px]">No.</p>
+                  <p className="text-sm font-normal text-slate-700 leading-5">0060000101207</p>
+                </div>
+                <div className="flex flex-col items-end text-xs font-normal text-slate-500 leading-4">
+                  <p>Sucursal: 006</p>
+                  <p>Punto de venta: 00001</p>
+                </div>
               </div>
             </div>
           </div>
@@ -77,7 +79,7 @@ function BillDetail() {
 
             {/* Divider */}
             <div className="flex items-center justify-center px-0 py-1">
-              <div className="h-px bg-slate-400 w-full"></div>
+              <div className="h-px bg-[rgba(148,163,184,0.2)] w-full"></div>
             </div>
 
             {/* Fechas */}
@@ -94,7 +96,7 @@ function BillDetail() {
 
             {/* Divider */}
             <div className="flex items-center justify-center px-0 py-1 mt-3">
-              <div className="h-px bg-slate-400 w-full"></div>
+              <div className="h-px bg-[rgba(148,163,184,0.2)] w-full"></div>
             </div>
 
             {/* Condición */}
@@ -249,7 +251,7 @@ function BillDetail() {
 
                 {/* Divider */}
                 <div className="flex items-center justify-center px-0 py-1">
-                  <div className="h-px bg-slate-400 w-full"></div>
+                  <div className="h-px bg-[rgba(148,163,184,0.2)] w-full"></div>
                 </div>
 
                 {/* Observaciones */}
@@ -260,7 +262,7 @@ function BillDetail() {
 
                 {/* Divider */}
                 <div className="flex items-center justify-center px-0 py-1">
-                  <div className="h-px bg-slate-400 w-full"></div>
+                  <div className="h-px bg-[rgba(148,163,184,0.2)] w-full"></div>
                 </div>
 
                 {/* Términos y condiciones */}
@@ -278,7 +280,7 @@ function BillDetail() {
           </div>
 
           {/* Summary */}
-          <div className="bg-white rounded-b-xl overflow-hidden">
+          <div className="bg-white">
             <div className="px-4 py-4 flex flex-col gap-2">
               {/* Subtotal */}
               <div className="flex items-center justify-between">
@@ -313,11 +315,11 @@ function BillDetail() {
                 <p className="text-2xl font-semibold text-slate-900 leading-8">₡18.000</p>
               </div>
             </div>
+          </div>
 
-            {/* Bottom decoration */}
-            <div className="h-10 relative">
-              <img src="/images/Ending-bill.svg" alt="" className="w-full h-full object-cover" />
-            </div>
+          {/* Bottom decoration */}
+          <div className="h-10 relative">
+            <img src="/images/Ending-bill.svg" alt="" className="w-full h-full object-cover" />
           </div>
         </div>
       </div>

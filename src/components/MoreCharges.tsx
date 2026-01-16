@@ -32,6 +32,7 @@ interface Charge {
   amount?: string;
   percentage?: string;
   selectedContact?: Contact | null;
+  percentageProducts?: Product[];
 }
 
 const chargeOptions = ['Otros cargos', 'Cobro de un tercero'];
@@ -116,7 +117,7 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
       const newCharge: Charge = {
         id: Date.now().toString(),
         chargeType: chargeType as 'Otros cargos' | 'Cobro de un tercero',
-        ...(activeTab === 'amount' ? { amount: value } : { percentage: value }),
+        ...(activeTab === 'amount' ? { amount: value } : { percentage: value, percentageProducts }),
         selectedContact: chargeType === 'Cobro de un tercero' ? selectedContact || undefined : undefined,
       };
 
@@ -268,23 +269,22 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
                 </div>
 
                 {/* Product Items */}
-                {percentageProducts.map((product, index) => (
-                  <div key={product.id}>
-                    <div className="px-4 pt-4 pb-4">
+                {percentageProducts.length > 0 && (
+                  <div className="px-3 py-3">
+                    {percentageProducts.map((product) => (
                       <ProductItem
+                        key={product.id}
                         name={product.name}
+                        productId={product.productId}
+                        tax={product.tax}
                         quantity={`Cant. ${product.quantity}`}
-                        price={formatCurrency(product.price)}
-                        discount={product.discount > 0 ? `-${((product.discount / (product.price * product.quantity)) * 100).toFixed(0)}%` : ''}
-                        onEdit={() => console.log('Edit product')}
+                        price={`₡${product.price.toLocaleString()}`}
+                        discount={`-15%`}
                         onDelete={() => setPercentageProducts(percentageProducts.filter(p => p.id !== product.id))}
                       />
-                    </div>
-                    {index < percentageProducts.length - 1 && (
-                      <div className="h-px bg-slate-200"></div>
-                    )}
+                    ))}
                   </div>
-                ))}
+                )}
 
                 {/* Add Product Button */}
                 <button
