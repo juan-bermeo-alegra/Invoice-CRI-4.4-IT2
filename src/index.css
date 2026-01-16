@@ -15,11 +15,19 @@
     --color-border-active: #30aba9;
   }
 
+  html {
+    @apply h-full;
+  }
+
   body {
-    @apply min-w-[320px] min-h-screen bg-white text-slate-900;
+    @apply min-w-[320px] h-full bg-slate-100 text-slate-900;
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    @apply h-full;
   }
 }
 
