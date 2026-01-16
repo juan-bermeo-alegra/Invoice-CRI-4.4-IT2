@@ -7,15 +7,8 @@ import './Introduction.css';
 function Introduction() {
   const navigate = useNavigate();
 
-  const handleExploreOption = (option: number) => {
-    if (option === 1) {
-      navigate('/1st-proposal');
-    } else if (option === 2) {
-      navigate('/2nd-proposal');
-    } else {
-      console.log(`Exploring option ${option}`);
-      // Aquí se puede agregar la navegación a las otras opciones
-    }
+  const handleExploreOption = () => {
+    navigate('/1st-proposal');
   };
 
   return (
@@ -23,7 +16,7 @@ function Introduction() {
       <div className="introduction__header">
         <div className="introduction__title-section">
           <div className="mb-2">
-            <Iteration text="IT1" />
+            <Iteration text="IT2" />
           </div>
           <h1 className="introduction__title">Facturación CRI 4.4</h1>
           <div className="introduction__prototype-type">
@@ -35,12 +28,7 @@ function Introduction() {
           <OptionCard
             title="Propuesta 1"
             description="Campos principales presentes en una misma pantalla con barra de progreso"
-            onExplore={() => handleExploreOption(1)}
-          />
-          <OptionCard
-            title="Propuesta 2"
-            description="Campos divididos en 3 pasos, la última es para revisar y editar"
-            onExplore={() => handleExploreOption(2)}
+            onExplore={handleExploreOption}
           />
         </div>
       </div>
@@ -63,7 +51,7 @@ function Introduction() {
           </div>
           <div className="introduction__info-item">
             <p className="introduction__info-label">Shared on</p>
-            <p className="introduction__info-value">Mie. 19 Oct, 2025</p>
+            <p className="introduction__info-value">Vie. 16 Ene, 2026</p>
           </div>
         </div>
       </div>
