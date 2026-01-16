@@ -5,6 +5,7 @@ interface InvoiceContainerProps {
   invoiceDate: string;
   amount: string;
   status: 'por-cobrar' | 'anulada' | 'borrador' | 'cobrado';
+  onClick?: () => void;
 }
 
 const statusConfig = {
@@ -41,11 +42,15 @@ export default function InvoiceContainer({
   invoiceDate,
   amount,
   status,
+  onClick,
 }: InvoiceContainerProps) {
   const config = statusConfig[status];
 
   return (
-    <div className="flex gap-3 items-center w-full">
+    <button
+      onClick={onClick}
+      className="flex gap-3 items-center w-full hover:bg-slate-50 transition-colors cursor-pointer text-left"
+    >
       {/* Content */}
       <div className="flex-1 flex flex-col gap-2 py-3">
         {/* Header */}
@@ -71,6 +76,6 @@ export default function InvoiceContainer({
           </div>
         </div>
       </div>
-    </div>
+    </button>
   );
 }

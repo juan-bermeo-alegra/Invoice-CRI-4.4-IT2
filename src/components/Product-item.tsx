@@ -1,5 +1,3 @@
-import { useState, useRef } from 'react';
-import MenuDropdown from './MenuDropdown';
 
 interface ProductItemProps {
   name?: string;
@@ -14,16 +12,13 @@ interface ProductItemProps {
 
 function ProductItem({
   name = "Planta de mesa",
-  productId = "ITS002",
-  tax = "IVA 19%",
-  quantity = "Cant. 1",
+  productId,
+  tax,
+  quantity,
   price = "₡17.000",
-  discount = "-15%",
-  onEdit,
+  discount,
   onDelete,
 }: ProductItemProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   return (
     <div className="w-full flex gap-3 items-center pr-0" data-name="Item container">
@@ -37,13 +32,25 @@ function ProductItem({
               {name}
             </p>
             {/* Meta Info */}
-            <div className="flex gap-1 items-center">
-              <p className="text-xs leading-4 text-slate-400 whitespace-nowrap">{productId}</p>
-              <div className="size-1 rounded-full bg-slate-400" />
-              <p className="text-xs leading-4 text-slate-400 whitespace-nowrap">{tax}</p>
-              <div className="size-1 rounded-full bg-slate-400" />
-              <p className="text-xs leading-4 text-slate-400 whitespace-nowrap">{quantity}</p>
-            </div>
+            {(productId || tax || quantity) && (
+              <div className="flex gap-1 items-center">
+                {productId && (
+                  <>
+                    <p className="text-xs leading-4 text-slate-400 whitespace-nowrap">{productId}</p>
+                    {tax || quantity ? <div className="size-1 rounded-full bg-slate-400" /> : null}
+                  </>
+                )}
+                {tax && (
+                  <>
+                    <p className="text-xs leading-4 text-slate-400 whitespace-nowrap">{tax}</p>
+                    {quantity ? <div className="size-1 rounded-full bg-slate-400" /> : null}
+                  </>
+                )}
+                {quantity && (
+                  <p className="text-xs leading-4 text-slate-400 whitespace-nowrap">{quantity}</p>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Right: Price and Discount */}
@@ -51,36 +58,28 @@ function ProductItem({
             <p className="font-semibold text-lg leading-[30px] text-slate-900 whitespace-nowrap">
               {price}
             </p>
-            <div className="flex gap-1 items-end text-xs leading-4 whitespace-nowrap">
-              <p className="text-slate-400">Desc.</p>
-              <p className="text-teal-600">{discount}</p>
-            </div>
+            {discount && (
+              <div className="flex gap-1 items-end text-xs leading-4 whitespace-nowrap">
+                <p className="text-slate-400">Desc.</p>
+                <p className="text-teal-600">{discount}</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* More Button */}
+      {/* Delete Button */}
       <button
-        ref={menuButtonRef}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-slate-100 transition-colors shrink-0"
-        aria-label="Más opciones"
+        onClick={onDelete}
+        className="flex items-center justify-center w-10 h-10 rounded-lg hover:bg-red-50 transition-colors shrink-0"
+        aria-label="Eliminar"
       >
         <img
-          src="/images/Menu-button.svg"
-          alt="Más opciones"
-          className="w-8 h-8"
+          src="/images/delete.svg"
+          alt="Eliminar"
+          className="w-5 h-5"
         />
       </button>
-
-      {/* Dropdown Menu */}
-      <MenuDropdown
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        triggerRef={menuButtonRef}
-      />
     </div>
   );
 }

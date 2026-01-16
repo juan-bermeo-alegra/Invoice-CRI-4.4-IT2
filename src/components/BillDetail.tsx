@@ -1,9 +1,20 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function BillDetail() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isMoreOptionsOpen, setIsMoreOptionsOpen] = useState(false);
+
+  // Get invoice data from navigation state
+  const invoice = location.state?.invoice || {
+    clientName: 'Sofia Carson',
+    invoiceType: 'Factura de venta',
+    invoiceNumber: '0060000101207',
+    invoiceDate: '25/06/2025',
+    amount: '₡18.000',
+    status: 'por-cobrar',
+  };
 
   return (
     <div className="min-h-screen bg-slate-100 w-full flex flex-col">
@@ -26,7 +37,7 @@ function BillDetail() {
           {/* Total Amount Card */}
           <div className="bg-white rounded-t-xl">
             <div className="px-4 py-8 flex items-center justify-center">
-              <p className="text-[40px] font-semibold text-slate-900 leading-[48px]">₡18.000</p>
+              <p className="text-[40px] font-semibold text-slate-900 leading-[48px]">{invoice.amount}</p>
             </div>
 
             {/* Divider line */}
@@ -39,7 +50,7 @@ function BillDetail() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   <p className="text-lg font-semibold text-slate-900 leading-[30px]">No.</p>
-                  <p className="text-sm font-normal text-slate-700 leading-5">0060000101207</p>
+                  <p className="text-sm font-normal text-slate-700 leading-5">{invoice.invoiceNumber}</p>
                 </div>
                 <div className="flex flex-col items-end text-xs font-normal text-slate-500 leading-4">
                   <p>Sucursal: 006</p>
@@ -68,10 +79,10 @@ function BillDetail() {
             <div className="px-3 py-0">
               <div className="flex items-center gap-3 px-0 py-3">
                 <div className="bg-indigo-600 rounded-full size-10 flex items-center justify-center text-white font-semibold text-base">
-                  C
+                  {invoice.clientName.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex-1">
-                  <p className="text-base font-semibold text-slate-900 leading-7">Sofia Carson</p>
+                  <p className="text-base font-semibold text-slate-900 leading-7">{invoice.clientName}</p>
                   <p className="text-xs font-normal text-slate-500 leading-4">ID: 3-105-118067</p>
                 </div>
               </div>
@@ -86,7 +97,7 @@ function BillDetail() {
             <div className="flex gap-3 px-4 py-0 mt-3">
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-500 leading-5">Fecha de creación</p>
-                <p className="text-lg font-normal text-slate-700 leading-[30px]">25/06/2025</p>
+                <p className="text-lg font-normal text-slate-700 leading-[30px]">{invoice.invoiceDate}</p>
               </div>
               <div className="flex-1">
                 <p className="text-sm font-semibold text-slate-500 leading-5">Fecha de vencimiento</p>
@@ -312,7 +323,7 @@ function BillDetail() {
               {/* Total */}
               <div className="flex items-center justify-between">
                 <p className="text-2xl font-semibold text-slate-900 leading-8">Total</p>
-                <p className="text-2xl font-semibold text-slate-900 leading-8">₡18.000</p>
+                <p className="text-2xl font-semibold text-slate-900 leading-8">{invoice.amount}</p>
               </div>
             </div>
           </div>

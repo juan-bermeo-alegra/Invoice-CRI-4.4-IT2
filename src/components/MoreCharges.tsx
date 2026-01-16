@@ -275,11 +275,8 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
                       <ProductItem
                         key={product.id}
                         name={product.name}
-                        productId={product.productId}
-                        tax={product.tax}
-                        quantity={`Cant. ${product.quantity}`}
-                        price={`₡${product.price.toLocaleString()}`}
-                        discount={`-15%`}
+                        productId={product.productId || `REF${product.id.toString().padStart(3, '0')}`}
+                        price={formatCurrency(product.price)}
                         onDelete={() => setPercentageProducts(percentageProducts.filter(p => p.id !== product.id))}
                       />
                     ))}

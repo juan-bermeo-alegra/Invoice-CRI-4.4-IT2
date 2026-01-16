@@ -102,29 +102,13 @@ function ItemsBottomSheet({
                         {product.name}
                       </p>
                       <div className="flex gap-1 items-center text-xs text-slate-400 mt-1">
-                        {product.productId && (
-                          <>
-                            <span>{product.productId}</span>
-                            <span className="w-1 h-1 rounded-full bg-slate-400"></span>
-                          </>
-                        )}
-                        {product.tax && (
-                          <>
-                            <span>{product.tax}</span>
-                            <span className="w-1 h-1 rounded-full bg-slate-400"></span>
-                          </>
-                        )}
-                        <span>Cant. {product.quantity}</span>
+                        <span>{product.productId || `REF${product.id.toString().padStart(3, '0')}`}</span>
                       </div>
                     </div>
                     <div className="flex flex-col items-end shrink-0">
                       <p className="text-lg font-semibold text-slate-900">
                         ${product.price.toLocaleString('es-CR')}
                       </p>
-                      <div className="flex gap-1 items-end text-xs mt-1">
-                        <p className="text-slate-400">Desc.</p>
-                        <p className="text-teal-600">-{product.discount}%</p>
-                      </div>
                     </div>
                   </div>
                 </div>

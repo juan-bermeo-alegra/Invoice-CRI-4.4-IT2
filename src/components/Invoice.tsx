@@ -164,6 +164,7 @@ export default function Invoice() {
               invoiceDate={invoice.invoiceDate}
               amount={invoice.amount}
               status={invoice.status}
+              onClick={() => navigate('/bill-detail', { state: { invoice } })}
             />
             {index < filteredInvoices.length - 1 && (
               <div className="h-px bg-slate-200"></div>

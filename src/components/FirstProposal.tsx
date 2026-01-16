@@ -53,6 +53,7 @@ const getInitialState = () => {
     products: [],
     isClientSelected: false,
     discountPercentage: 0,
+    retentions: [],
   };
 };
 
@@ -63,6 +64,12 @@ interface Charge {
   percentage?: string;
   selectedContact?: { id: string; name: string } | null;
   percentageProducts?: Array<{ id: number; name: string; quantity: number; price: number; discount: number }>;
+}
+
+interface Retention {
+  id: number;
+  type: string;
+  percentage: number;
 }
 
 function FirstProposal() {
@@ -80,9 +87,9 @@ function FirstProposal() {
   const [paymentMethod, setPaymentMethod] = useState(initialState.paymentMethod);
   const [isPaymentMethodOpen, setIsPaymentMethodOpen] = useState(false);
 
-  const [retention, setRetention] = useState(initialState.retention || '');
-  const [isRetentionsSectionOpen, setIsRetentionsSectionOpen] = useState(false);
+  const [retentions, setRetentions] = useState<Retention[]>(initialState.retentions || []);
   const [isRetentionBottomSheetOpen, setIsRetentionBottomSheetOpen] = useState(false);
+  const [currentRetentionId, setCurrentRetentionId] = useState<number | null>(null);
   const [isMoreOptionsOpen, setIsMoreOptionsOpen] = useState(false);
   const [isClientSelected, setIsClientSelected] = useState(initialState.isClientSelected);
   const [numeration, setNumeration] = useState(initialState.numeration);
@@ -91,7 +98,7 @@ function FirstProposal() {
   const [isCreationDateOpen, setIsCreationDateOpen] = useState(false);
   const [dueDateDate, setDueDateDate] = useState(initialState.dueDateDate);
   const [isDueDateOpen, setIsDueDateOpen] = useState(false);
-  const [products, setProducts] = useState<Array<{ id: number; name: string; quantity: number; price: number; discount: number }>>(
+  const [products, setProducts] = useState<Array<{ id: number; name: string; productId: string; tax: string; quantity: number; price: number; discount: number }>>(
     initialState.products
   );
   const [discountPercentage] = useState(initialState.discountPercentage);
@@ -163,10 +170,10 @@ function FirstProposal() {
       products,
       isClientSelected,
       discountPercentage,
-      retention,
+      retentions,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
-  }, [documentType, invoiceType, economicActivity, condition, paymentMethod, numeration, creationDate, dueDateDate, products, isClientSelected, discountPercentage, retention]);
+  }, [documentType, invoiceType, economicActivity, condition, paymentMethod, numeration, creationDate, dueDateDate, products, isClientSelected, discountPercentage, retentions]);
 
   // Set today's date when electronic numeration is selected
   useEffect(() => {
@@ -192,9 +199,9 @@ function FirstProposal() {
     const taxes = (subtotalAfterDiscount * taxPercentage) / 100;
 
     let retentionAmount = 0;
-    if (retention === 'Retención 1 (20%)') {
-      retentionAmount = subtotalAfterDiscount * 0.20;
-    }
+    retentions.forEach(retention => {
+      retentionAmount += (subtotalAfterDiscount * retention.percentage) / 100;
+    });
 
     const total = subtotalAfterDiscount + taxes - retentionAmount;
 
@@ -207,18 +214,19 @@ function FirstProposal() {
       retention: retentionAmount,
       total,
     };
-
-    return {
-      subtotal,
-      productDiscount: totalDiscount,
-      percentageDiscount: discountAmount,
-      totalDiscount: totalDiscount + discountAmount,
-      taxes,
-      total,
-    };
   };
 
   const totals = calculateTotals();
+
+  // Calculate subtotal after discount for retention display
+  const subtotal = products.reduce((sum, product) => {
+    return sum + (product.price * product.quantity);
+  }, 0);
+  const totalDiscount = products.reduce((sum, product) => {
+    return sum + product.discount;
+  }, 0);
+  const discountAmount = (subtotal * discountPercentage) / 100;
+  const subtotalAfterDiscount = subtotal - totalDiscount - discountAmount;
 
   const formatCurrency = (value: number) => {
     return `₡${value.toLocaleString('es-CR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -637,6 +645,8 @@ function FirstProposal() {
                 <div className="px-4 pt-4 pb-4">
                   <ProductItem
                     name={product.name}
+                    productId={product.productId}
+                    tax={product.tax}
                     quantity={`Cant. ${product.quantity}`}
                     price={formatCurrency(product.price)}
                     discount={product.discount > 0 ? `-${((product.discount / (product.price * product.quantity)) * 100).toFixed(0)}%` : ''}
@@ -659,6 +669,8 @@ function FirstProposal() {
                   {
                     id: newId,
                     name: `Producto ${newId}`,
+                    productId: `PRD${newId.toString().padStart(3, '0')}`,
+                    tax: 'IVA 19%',
                     quantity: 1,
                     price: 200,
                     discount: 0,
@@ -751,52 +763,63 @@ function FirstProposal() {
 
           {/* Retenciones */}
           {showRetenciones && (
-          <div className="bg-white">
-            <button
-              onClick={() => setIsRetentionsSectionOpen(!isRetentionsSectionOpen)}
-              className="w-full px-4 py-3 flex items-center justify-between border-b border-[rgba(148,163,184,0.4)] hover:bg-slate-50 transition-colors"
-            >
-              <h3 className="text-base font-medium text-slate-700">Retenciones</h3>
-              <img
-                src="/images/Dropdown-Icon.svg"
-                alt=""
-                className={`w-6 h-6 transition-transform ${isRetentionsSectionOpen ? 'rotate-180' : ''}`}
-              />
-            </button>
-            {isRetentionsSectionOpen && (
-              <div className="px-4 py-4">
-                <div className="flex items-center gap-4">
-                  <button
-                    onClick={() => setIsRetentionBottomSheetOpen(true)}
-                    className="flex-1 h-12 px-3.5 border border-slate-300/40 rounded-xl text-base text-slate-900 outline-none focus:border-[#30aba9] bg-white text-left hover:bg-slate-50 transition-colors flex items-center justify-between"
-                  >
-                    <span className={retention ? 'text-slate-900' : 'text-slate-400'}>
-                      {retention || 'Retención'}
-                    </span>
-                    <svg className="pointer-events-none shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M7.5 5L12.5 10L7.5 15" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </button>
-                  <div className="flex items-center justify-end gap-2">
-                    <span className="text-sm font-medium text-slate-700">=</span>
-                    <p className="text-sm font-medium text-slate-900">
-                      {retention ? formatCurrency(totals.retention || 0) : formatCurrency(0)}
-                    </p>
-                    {retention && (
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setRetention('');
-                        }}
-                        className="text-red-500 hover:bg-red-50 rounded-lg p-1 transition-colors"
-                      >
-                        <img src="/images/delete.svg" alt="Eliminar" className="w-5 h-5" />
-                      </button>
-                    )}
+          <div className="bg-white overflow-visible">
+            {/* Header */}
+            <div className="border-b border-[rgba(148,163,184,0.4)] pt-[8px] pb-[12px] px-4">
+              <div className="flex items-center gap-0.5">
+                <p className="text-base font-medium text-slate-700">Retenciones</p>
+              </div>
+            </div>
+
+            {/* Retention Items */}
+            {retentions.length > 0 && (
+              <div className="flex flex-col gap-0">
+                {retentions.map((retention) => (
+                  <div key={retention.id}>
+                    <div className="px-4 pt-4 pb-4 flex items-center gap-4">
+                      <div className="flex-1 h-12 px-3.5 border border-slate-300/40 rounded-xl text-base text-slate-900 bg-white text-left flex items-center justify-between">
+                        <span className="text-slate-900">{retention.type}</span>
+                        <svg className="pointer-events-none shrink-0" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                          <path d="M7.5 5L12.5 10L7.5 15" stroke="#64748B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                      <div className="flex items-center justify-end gap-2">
+                        <span className="text-sm font-medium text-slate-700">=</span>
+                        <p className="text-sm font-medium text-slate-900">
+                          {formatCurrency((subtotalAfterDiscount * retention.percentage) / 100)}
+                        </p>
+                        <button
+                          onClick={() => {
+                            setRetentions(retentions.filter(r => r.id !== retention.id));
+                          }}
+                          className="text-red-500 hover:bg-red-50 rounded-lg p-1 transition-colors"
+                        >
+                          <img src="/images/delete.svg" alt="Eliminar" className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             )}
+
+            {/* Divider before Add Button */}
+            {retentions.length > 0 && (
+              <div className="border-b border-[rgba(148,163,184,0.4)]"></div>
+            )}
+
+            {/* Add Retention Button */}
+            <button
+              onClick={() => {
+                const newId = retentions.length > 0 ? Math.max(...retentions.map(r => r.id)) + 1 : 1;
+                setCurrentRetentionId(newId);
+                setIsRetentionBottomSheetOpen(true);
+              }}
+              className="w-full px-4 py-3 flex items-center justify-center gap-1 text-[#30aba9] font-medium text-sm hover:bg-slate-50 transition-colors border-[rgba(148,163,184,0.4)]"
+            >
+              <span className="text-base font-semibold">+</span>
+              <span>Agregar retención</span>
+            </button>
           </div>
           )}
 
@@ -980,9 +1003,25 @@ function FirstProposal() {
         isOpen={isRetentionBottomSheetOpen}
         title="Retenciones"
         options={['Retención 1 (20%)']}
-        selectedOption={retention}
-        onClose={() => setIsRetentionBottomSheetOpen(false)}
-        onSelect={setRetention}
+        selectedOption=""
+        onClose={() => {
+          setIsRetentionBottomSheetOpen(false);
+          setCurrentRetentionId(null);
+        }}
+        onSelect={(selectedOption) => {
+          if (currentRetentionId !== null && selectedOption === 'Retención 1 (20%)') {
+            setRetentions([
+              ...retentions,
+              {
+                id: currentRetentionId,
+                type: selectedOption,
+                percentage: 20,
+              },
+            ]);
+          }
+          setIsRetentionBottomSheetOpen(false);
+          setCurrentRetentionId(null);
+        }}
       />
 
       {/* Numeration Bottom Sheet */}
