@@ -149,7 +149,16 @@ function MoreCharges({ availableProducts: propsProducts }: MoreChargesProps) {
     }
   };
 
-  const isFormValid = currentChargeType && currentValue && (currentChargeType === 'Otros cargos' || currentSelectedContact);
+  // Validación: requiere productos disponibles para poder crear cargos
+  // No se pueden crear cargos si no hay productos en "Productos o servicios"
+  const hasProductsFromFirstProposal = stateProducts.length > 0;
+
+  const isFormValid =
+    hasProductsFromFirstProposal &&
+    currentChargeType &&
+    currentValue &&
+    (currentChargeType === 'Otros cargos' || currentSelectedContact) &&
+    (activeTab === 'amount' || percentageProducts.length > 0);
 
   return (
     <div className="min-h-screen bg-slate-100 w-full flex flex-col">

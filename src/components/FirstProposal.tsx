@@ -746,9 +746,16 @@ function FirstProposal() {
             {/* Add Button */}
             <button
               onClick={() => {
-                navigate('/more-charges', { state: { products, charges: otherCharges } });
+                if (products.length > 0) {
+                  navigate('/more-charges', { state: { products, charges: otherCharges } });
+                }
               }}
-              className="w-full px-4 py-4 flex items-center justify-center gap-1 text-[#30aba9] font-medium text-sm hover:bg-slate-50 transition-colors border-[rgba(148,163,184,0.4)] border-b"
+              disabled={products.length === 0}
+              className={`w-full px-4 py-4 flex items-center justify-center gap-1 font-medium text-sm transition-colors ${
+                products.length > 0
+                  ? 'text-[#30aba9] hover:bg-slate-50 cursor-pointer'
+                  : 'text-slate-400 cursor-not-allowed opacity-50'
+              }`}
             >
               <span className="text-base font-semibold">+</span>
               <span>Agregar cargo</span>
