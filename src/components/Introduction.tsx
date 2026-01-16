@@ -27,7 +27,7 @@ function Introduction() {
         <div className="introduction__cards">
           <OptionCard
             title="Propuesta 1"
-            description="Campos principales presentes en una misma pantalla con barra de progreso"
+            description="Correcciones + Flujo de Otros cargos, sección para agregar retenciones y pantall de detalle de la factura"
             onExplore={handleExploreOption}
           />
         </div>
