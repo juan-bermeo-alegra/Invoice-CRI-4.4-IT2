@@ -336,9 +336,6 @@ function BillDetail() {
       </div>
 
       {/* Home Indicator */}
-      <div className="h-[34px] flex items-center justify-center shrink-0">
-        <div className="w-36 h-1.5 bg-slate-700 rounded-full"></div>
-      </div>
     </div>
   );
 }
